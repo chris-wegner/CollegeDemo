@@ -17,26 +17,11 @@ namespace CollegeDemo.Controllers
             _collegeRepository = collegeRepository;
         }
         
-        // GET: api/schools
+        // GET: api/colleges
         [HttpGet]
         public async Task<IEnumerable<ResultCollege>> Get(string name, string state)
         {
             return await _collegeRepository.GetColleges(name, state);
         }
-
-
-        //[HttpGet("[action]")]
-        //public IEnumerable<ResultCollege> Colleges()
-        //{
-        //    var rng = new Random();
-        //    return Enumerable.Range(1, 5).Select(index => new ResultCollege
-        //    {
-        //        Id = 1,
-        //        Name = "Some School",
-        //        City = "Green Bay",
-        //        State = "WI",
-        //        Zip = "55555"
-        //    });
-        //}
     }
 }

@@ -1,36 +1,44 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
+import { Form } from 'react-bootstrap';
 
-interface CollegesExampleState {
+interface CollegeSearchState {
+    states: StateModel[];
+    loadingStates: boolean;
     colleges: CollegeModel[];
-    loading: boolean;
+    loadingColleges: boolean;
 }
 
-export class Colleges extends React.Component<RouteComponentProps<{}>, CollegesExampleState> {
+export class CollegeSearch extends React.Component<RouteComponentProps<{}>, CollegeSearchState> {
     constructor() {
         super();
-        this.state = { colleges: [], loading: true };
+        this.state = { states: [], loadingStates: true, colleges: [], loadingColleges: false };
 
-        fetch('api/Colleges?state=wi')
-            .then(response => response.json() as Promise<CollegeModel[]>)
+        fetch('api/states')
+            .then(response => response.json() as Promise<StateModel[]>)
             .then(data => {
-                this.setState({ colleges: data, loading: false });
+                this.setState({ states: data, loadingStates: false });
             });
     }
 
     public render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : Colleges.renderForecastsTable(this.state.colleges);
+        let searchFormContents = this.state.loadingStates
+            ? <p><em>Loading States...</em></p>
+            : CollegeSearch.renderSearchForm(this.state.states);
+
+        let collegeContents = this.state.loadingColleges
+            ? <p><em>Loading Colleges...</em></p>
+            : CollegeSearch.renderCollegesTable(this.state.colleges);
 
         return <div>
             <h1>Find your college or university</h1>
-            { contents }
+            {searchFormContents}
+            {collegeContents}
         </div>;
     }
 
-    private static renderForecastsTable(colleges: CollegeModel[]) {
+    private static renderCollegesTable(colleges: CollegeModel[]) {
         return <table className='table'>
             <thead>
                 <tr>
@@ -44,16 +52,56 @@ export class Colleges extends React.Component<RouteComponentProps<{}>, CollegesE
             <tbody>
             {colleges.map(college =>
                     <tr key={college.id}>
-                    <td>{ college.name}</td>
-                    <td>{ college.city }</td>
-                    <td>{ college.state }</td>
-                    <td>{ college.zip }</td>
-                    <td>{ college.totalEnrollment }</td>
+                    <td>{college.name}</td>
+                    <td>{college.city}</td>
+                    <td>{college.state}</td>
+                    <td>{college.zip}</td>
+                    <td>{college.totalEnrollment}</td>
                 </tr>
             )}
             </tbody>
         </table>;
     }
+
+    private static renderSearchForm(states: StateModel[]) {
+        return <div>
+            <Form>
+                <br />
+                <strong>Name:&nbsp;</strong>
+                <input type="text" name="searchName" id="searchName" />
+                <br />
+                <br />
+                <strong>State: &nbsp;</strong>
+                <input type="select" name="searchState" id="searchState"> 
+                </input>
+                <br />
+                <br />
+            </Form>
+
+            
+        </div>;
+        //    <table className='table'>
+        //    <thead>
+        //        <tr>
+        //            <th>abbreviation</th>
+        //            <th>name</th>
+        //        </tr>
+        //    </thead>
+        //    <tbody>
+        //        {states.map(college =>
+        //            <tr key={college.abbreviation}>
+        //                <td>{college.abbreviation}</td>
+        //                <td>{college.name}</td>
+        //            </tr>
+        //        )}
+        //    </tbody>
+        //</table>;
+    }
+}
+
+interface StateModel {
+    name: string;
+    abbreviation: string;
 }
 
 interface CollegeModel {

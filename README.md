@@ -1,5 +1,12 @@
-# CollegeDemo
-A demo project in .Net Core 2.0 with a react front end.
+# College Search Demo
+A demo project in .Net Core 2.0 with a React front end.
+
+
+Tech Stack:
+* Languages: C#, TypeScript
+* Frameworks: ASP.Net Core 2.0, React, react-bootstrap, Newtonsoft.Json and AutoMapper
+* Utilities: Webpack
 
 Setup Instructions:
-* A free api key to data.gov's API can be obtained by filling out the form located at: https://api.data.gov/signup/.  Once a key has been obtained, place the key in ~\CollegeDemo\appsettings.json.
+* A free api key to data.gov's API can be obtained by filling out the short form located at: https://api.data.gov/signup/.
+* Once a key has been obtained, place the key in ~\CollegeDemo\appsettings.json.

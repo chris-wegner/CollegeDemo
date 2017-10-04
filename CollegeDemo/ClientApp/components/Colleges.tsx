@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
-import { Form } from 'react-bootstrap';
+import { ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
 
 interface CollegeSearchState {
+    searchName: string;
+    searchState: string;
     states: StateModel[];
     loadingStates: boolean;
     colleges: CollegeModel[];
@@ -13,7 +15,7 @@ interface CollegeSearchState {
 export class CollegeSearch extends React.Component<RouteComponentProps<{}>, CollegeSearchState> {
     constructor() {
         super();
-        this.state = { states: [], loadingStates: true, colleges: [], loadingColleges: false };
+        this.state = { searchName: "", searchState: "WI", states: [], loadingStates: true, colleges: [], loadingColleges: false };
 
         fetch('api/states')
             .then(response => response.json() as Promise<StateModel[]>)
@@ -25,14 +27,13 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
     public render() {
         let searchFormContents = this.state.loadingStates
             ? <p><em>Loading States...</em></p>
-            : CollegeSearch.renderSearchForm(this.state.states);
+            : CollegeSearch.renderSearchForm(this.state);
 
         let collegeContents = this.state.loadingColleges
             ? <p><em>Loading Colleges...</em></p>
             : CollegeSearch.renderCollegesTable(this.state.colleges);
 
         return <div>
-            <h1>Find your college or university</h1>
             {searchFormContents}
             {collegeContents}
         </div>;
@@ -63,17 +64,43 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
         </table>;
     }
 
-    private static renderSearchForm(states: StateModel[]) {
+    private static renderSearchForm(searchState: CollegeSearchState) {
         return <div>
             <Form>
                 <br />
-                <strong>Name:&nbsp;</strong>
-                <input type="text" name="searchName" id="searchName" />
+                <FormGroup
+                    controlId="nameSearchInput"
+                    bsClass=".nameSearch"
+                    bsSize="sm"
+                >
+                    <ControlLabel>Enter a school name</ControlLabel>
+                    <FormControl
+                        type="text"
+                        value={searchState.searchName}
+                        placeholder="School Name"
+                        //onChange={this.handleChange}
+                    />
+                </FormGroup>
+                                
                 <br />
-                <br />
-                <strong>State: &nbsp;</strong>
-                <input type="select" name="searchState" id="searchState"> 
-                </input>
+                <FormGroup
+                    controlId="stateSearchInput"
+                    bsClass=".stateSearch"
+                    bsSize="sm"
+                >
+                    <ControlLabel>Select a state</ControlLabel>
+                    <FormControl
+                        componentClass="select"
+                        placeholder="select"
+                        value={searchState.searchState}
+                        //onChange={this.handleChange}
+                    >
+                        <option value="select">-Select-</option>
+                        {searchState.states.map(state =>
+                            <option key={state.abbreviation} value={state.abbreviation}>{state.name}</option>
+                        )}  
+                    </FormControl>
+                </FormGroup>
                 <br />
                 <br />
             </Form>

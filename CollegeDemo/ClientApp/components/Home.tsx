@@ -13,7 +13,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, {}> {
             <p><strong>Tech Stack:</strong> </p>
             <ul>
                 <li>Languages: C#, TypeScript</li>
-                <li>Frameworks: ASP.Net Core 2.0, React, react-bootstrap, Newtonsoft.Json and AutoMapper</li>
+                <li>Frameworks: ASP.Net Core 2.0, React, react-bootstrap, Swagger, Newtonsoft.Json and AutoMapper</li>
                 <li>Utilities: Webpack</li>
             </ul>
             <br />
@@ -23,6 +23,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, {}> {
                 <li>Obtain a free API key by filling out the form at: <a href="https://api.data.gov/signup">https://api.data.gov/signup</a></li>
             </ul>
             <br />
+            <p><strong>Localhost Swagger API Documentation: </strong><a href="http://localhost:65108/swagger">http://localhost:65108/swagger</a></p>
             <p><strong>GitHub Repository: </strong><a href="https://github.com/chris-wegner/CollegeDemo">https://github.com/chris-wegner/CollegeDemo</a></p>
             <p><strong>Contact Information: </strong>
                 <a href="mailto:chris.wegner@gmail.com?Subject=Your%20College%20Demo%20Site" target="_top">chris.wegner@gmail.com</a> or

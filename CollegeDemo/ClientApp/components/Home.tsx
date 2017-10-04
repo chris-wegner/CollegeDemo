@@ -12,9 +12,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, {}> {
             <br />
             <p><strong>Tech Stack:</strong> </p>
             <ul>
-                <li>Languages: C#, TypeScript</li>
-                <li>Frameworks: ASP.Net Core 2.0, React, react-bootstrap, Swagger, Newtonsoft.Json and AutoMapper</li>
-                <li>Utilities: Webpack</li>
+                <li><b>Languages:</b> C#, TypeScript</li>
+                <li><b>Frameworks:</b> ASP.Net Core 2.0, React, react-bootstrap, Swagger, Newtonsoft.Json and AutoMapper</li>
+                <li><b>Utilities:</b> Webpack</li>
+                <li><b>Host:</b> Azure</li>
             </ul>
             <br />
             <p><strong>Source API:</strong> </p>

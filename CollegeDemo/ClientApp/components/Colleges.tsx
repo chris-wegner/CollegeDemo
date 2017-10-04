@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
-import { Button, ControlLabel, Form, FormControl, FormGroup, OverlayTrigger, PageHeader, Popover } from 'react-bootstrap';
+import { Button, ControlLabel, Form, FormControl, FormGroup, OverlayTrigger, PageHeader, Popover, Tooltip } from 'react-bootstrap';
 
 interface CollegeSearchState {
     searchName: string;
@@ -67,7 +67,7 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
 
     private refreshCollegesTable() {
         let minNameSearchLength = this.state.minNameSearchLength;
-        let searchState = this.state.searchState && this.state.searchState != 'select' ? this.state.searchState : '';
+        let searchState = this.state.searchState && this.state.searchState != 'all' ? this.state.searchState : '';
         let searchName = this.state.searchName && (this.state.searchName.length >= minNameSearchLength || searchState.length != 0) ? this.state.searchName : '';
         
         let lastSearchName = this.state.lastSearchName ? this.state.lastSearchName : '';
@@ -122,13 +122,13 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
                     <td>
                         <OverlayTrigger trigger='focus' placement='left' overlay={
                             <Popover id='modal-popover' title={college.name}>
-                                <div>Completion Rate: {college.overallCompletionRate}</div>
-                                <div>Avg. Annual Net Cost: ${college.averageAnnualNetPrice ? college.averageAnnualNetPrice.toLocaleString() : ''}</div>
-                                <div>Avg. Loan Principal: ${college.averageLoanPrincipal ? college.averageLoanPrincipal.toLocaleString() : ''}</div>
-                                <div>Med. Earnings 6 Years After Entry: ${college.medianEarnings6YearsAfterEntry ? college.medianEarnings6YearsAfterEntry.toLocaleString() : ''}</div>
-                                <div>Med. Earnings 10 Years After Entry: ${college.medianEarnings10YearsAfterEntry ? college.medianEarnings10YearsAfterEntry.toLocaleString() : ''}</div>
-                                <div>Pct. Female: {college.percentFemaleEnrollment * 100}</div>
-                                <div>Pct. Male: {college.percentMaleEnrollment * 100}</div>
+                                <div>Completion Rate: {college.overallCompletionRate ? ((Math.round(college.overallCompletionRate * 10000) / 100) + '%') : ''}</div>
+                                <div>Avg. Annual Net Cost: {college.averageAnnualNetPrice ? ('$' + college.averageAnnualNetPrice.toLocaleString()) : ''}</div>
+                                <div>Avg. Loan Principal: {college.averageLoanPrincipal ? ('$' + college.averageLoanPrincipal.toLocaleString()) : ''}</div>
+                                <div>Med. Earnings 6 Years After Entry: {college.medianEarnings6YearsAfterEntry ? ('$' + college.medianEarnings6YearsAfterEntry.toLocaleString()) : ''}</div>
+                                <div>Med. Earnings 10 Years After Entry: {college.medianEarnings10YearsAfterEntry ? ('$' + college.medianEarnings10YearsAfterEntry.toLocaleString()) : ''}</div>
+                                <div>Pct. Female: {college.percentFemaleEnrollment ? ((Math.round(college.percentFemaleEnrollment * 10000) / 100) + '%') : ''}</div>
+                                <div>Pct. Male: {college.percentMaleEnrollment ? ((Math.round(college.percentMaleEnrollment * 10000) / 100) + '%') : ''}</div>
                             </Popover>
                         }>
                             <a href='#' onClick={e => e.preventDefault()}>Detail</a>
@@ -149,13 +149,17 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
                     bsClass='.nameSearch'
                     bsSize='sm'
                 >
-                    <ControlLabel>Enter a school name</ControlLabel>
-                    <FormControl
-                        type='text'
-                        value={collegeSearchState.searchName}
-                        placeholder='School Name (enter at least 3 characters)'
-                        onChange={e => this.handleSearchNameChange(e)}
-                    />
+                    <ControlLabel>Enter a School Name</ControlLabel>
+                    <OverlayTrigger placement="bottom" overlay={
+                        <Tooltip id='nameSearchTooltip'>{'When the State is set to -All-, a School Name that is less than ' + collegeSearchState.minNameSearchLength + ' characters will not be used to filter schools.'}</Tooltip>
+                    }>
+                        <FormControl
+                            type='text'
+                            value={collegeSearchState.searchName}
+                            placeholder='School Name'
+                            onChange={e => this.handleSearchNameChange(e)}
+                        />
+                    </OverlayTrigger>
                 </FormGroup>           
                 <br />
                 <FormGroup
@@ -163,17 +167,17 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
                     bsClass='.stateSearch'
                     bsSize='sm'
                 >
-                    <ControlLabel>Select a state</ControlLabel>
+                    <ControlLabel>Select a State</ControlLabel>
                     <FormControl
                         componentClass='select'
                         placeholder='select'
                         value={collegeSearchState.searchState}
                         onChange={e => this.handleSearchStateChange(e)}
                     >
-                        <option value='select'>-Select-</option>
+                        <option value='all'>-All-</option>
                         {collegeSearchState.states.map(state =>
                             <option key={state.abbreviation} value={state.abbreviation}>{state.name}</option>
-                        )}  
+                        )}
                     </FormControl>
                 </FormGroup>
                 <br />

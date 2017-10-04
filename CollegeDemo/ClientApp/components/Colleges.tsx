@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
-import { ControlLabel, Form, FormControl, FormGroup, PageHeader } from 'react-bootstrap';
+import { Button, ControlLabel, Form, FormControl, FormGroup, OverlayTrigger, PageHeader, Popover } from 'react-bootstrap';
 
 interface CollegeSearchState {
     searchName: string;
@@ -102,15 +102,14 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
     }
 
     private static renderCollegesTable(colleges: CollegeModel[]) {
-        //debugger;
         return <table className='table'>
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>City</th>
                     <th>State</th>
-                    <th>Zip</th>
                     <th>Total Enrollment</th>
+                    <th/>
                 </tr>
             </thead>
             <tbody>
@@ -119,8 +118,22 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
                     <td>{college.name}</td>
                     <td>{college.city}</td>
                     <td>{college.state}</td>
-                    <td>{college.zip}</td>
-                    <td>{college.totalEnrollment}</td>
+                    <td>{college.totalEnrollment ? college.totalEnrollment.toLocaleString() : ''}</td>
+                    <td>
+                        <OverlayTrigger trigger='focus' placement='left' overlay={
+                            <Popover id='modal-popover' title={college.name}>
+                                <div>Completion Rate: {college.overallCompletionRate}</div>
+                                <div>Avg. Annual Net Cost: ${college.averageAnnualNetPrice ? college.averageAnnualNetPrice.toLocaleString() : ''}</div>
+                                <div>Avg. Loan Principal: ${college.averageLoanPrincipal ? college.averageLoanPrincipal.toLocaleString() : ''}</div>
+                                <div>Med. Earnings 6 Years After Entry: ${college.medianEarnings6YearsAfterEntry ? college.medianEarnings6YearsAfterEntry.toLocaleString() : ''}</div>
+                                <div>Med. Earnings 10 Years After Entry: ${college.medianEarnings10YearsAfterEntry ? college.medianEarnings10YearsAfterEntry.toLocaleString() : ''}</div>
+                                <div>Pct. Female: {college.percentFemaleEnrollment * 100}</div>
+                                <div>Pct. Male: {college.percentMaleEnrollment * 100}</div>
+                            </Popover>
+                        }>
+                            <a href='#' onClick={e => e.preventDefault()}>Detail</a>
+                        </OverlayTrigger>
+                    </td>
                 </tr>
             )}
             </tbody>

@@ -6,14 +6,13 @@ export class Home extends React.Component<RouteComponentProps<{}>, {}> {
         return <div>
             <h1>College Search Demo</h1>
             <br/>
-            <p>Welcome to this super awesome demo project where you can find a college or university, located in the United States, by either its name or state.  Use the menu and choose "Search for Colleges" to experience this demo in all of its glory.</p>
-            <br />
+            <p>Welcome to this demo project where you can find a U.S. based college or university by either its name or state.  Use the menu and choose "Search for Colleges" to experience this demo.</p>
             <br />
             <br />
             <p><strong>Tech Stack:</strong> </p>
             <ul>
                 <li><b>Languages:</b> C#, TypeScript</li>
-                <li><b>Frameworks:</b> ASP.Net Core 2.0, React, react-bootstrap, Swagger, Newtonsoft.Json and AutoMapper</li>
+                <li><b>Frameworks:</b> ASP.Net Core 2.0, React, react-bootstrap, Swagger (Swashbuckle), Newtonsoft.Json and AutoMapper</li>
                 <li><b>Utilities:</b> Webpack</li>
                 <li><b>Host:</b> Azure</li>
             </ul>
@@ -26,10 +25,6 @@ export class Home extends React.Component<RouteComponentProps<{}>, {}> {
             <br />
             <p><strong>Localhost Swagger API Documentation: </strong><a href="http://localhost:65108/swagger">http://localhost:65108/swagger</a></p>
             <p><strong>GitHub Repository: </strong><a href="https://github.com/chris-wegner/CollegeDemo">https://github.com/chris-wegner/CollegeDemo</a></p>
-            <p><strong>Contact Information: </strong>
-                <a href="mailto:chris.wegner@gmail.com?Subject=Your%20College%20Demo%20Site" target="_top">chris.wegner@gmail.com</a> or
-                <a href="tel:+12623477894" target="_top"> 262-347-7894</a>
-            </p>
         </div>;
     }
 }

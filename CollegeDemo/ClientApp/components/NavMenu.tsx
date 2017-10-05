@@ -6,7 +6,7 @@ export class NavMenu extends React.Component<{}, {}> {
         return <div className='main-nav'>
                 <div className='navbar navbar-inverse'>
                 <div className='navbar-header'>
-                    <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
+                    <button id='collapseButton' type='button' className='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
                         <span className='sr-only'>Toggle navigation</span>
                         <span className='icon-bar'></span>
                         <span className='icon-bar'></span>
@@ -18,12 +18,12 @@ export class NavMenu extends React.Component<{}, {}> {
                 <div className='navbar-collapse collapse'>
                     <ul className='nav navbar-nav'>
                         <li>
-                            <NavLink to={ '/' } exact activeClassName='active'>
+                            <NavLink to={ '/' } exact activeClassName='active' onClick={() => this.closeMenu()}>
                                 <span className='glyphicon glyphicon-home'></span> Home
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to={ '/colleges' } activeClassName='active'>
+                            <NavLink to={'/colleges'} activeClassName='active' onClick={() => this.closeMenu()}>
                                 <span className='glyphicon glyphicon-th-list'></span> Search for Colleges
                             </NavLink>
                         </li>
@@ -31,5 +31,11 @@ export class NavMenu extends React.Component<{}, {}> {
                 </div>
             </div>
         </div>;
+    }
+
+    public closeMenu() {
+        var collapseButton = document.getElementById('collapseButton');
+        if (collapseButton)
+            collapseButton.click();
     }
 }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
 import { Button, ControlLabel, Form, FormControl, FormGroup, OverlayTrigger, PageHeader, Popover, Tooltip } from 'react-bootstrap';
+import { CollegeLineItem } from './CollegeLineItem';
 
 interface CollegeSearchState {
     searchName: string;
@@ -113,29 +114,9 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
                 </tr>
             </thead>
             <tbody>
-            {colleges.map(college =>
-                    <tr key={college.id}>
-                    <td>{college.name}</td>
-                    <td>{college.city}</td>
-                    <td>{college.state}</td>
-                    <td>{college.totalEnrollment ? college.totalEnrollment.toLocaleString() : ''}</td>
-                    <td>
-                        <OverlayTrigger trigger='focus' placement='left' overlay={
-                            <Popover id='modal-popover' title={college.name}>
-                                <div>Completion Rate: {college.overallCompletionRate ? ((Math.round(college.overallCompletionRate * 10000) / 100) + '%') : ''}</div>
-                                <div>Avg. Annual Net Cost: {college.averageAnnualNetPrice ? ('$' + college.averageAnnualNetPrice.toLocaleString()) : ''}</div>
-                                <div>Avg. Loan Principal: {college.averageLoanPrincipal ? ('$' + college.averageLoanPrincipal.toLocaleString()) : ''}</div>
-                                <div>Med. Earnings 6 Years After Entry: {college.medianEarnings6YearsAfterEntry ? ('$' + college.medianEarnings6YearsAfterEntry.toLocaleString()) : ''}</div>
-                                <div>Med. Earnings 10 Years After Entry: {college.medianEarnings10YearsAfterEntry ? ('$' + college.medianEarnings10YearsAfterEntry.toLocaleString()) : ''}</div>
-                                <div>Pct. Female: {college.percentFemaleEnrollment ? ((Math.round(college.percentFemaleEnrollment * 10000) / 100) + '%') : ''}</div>
-                                <div>Pct. Male: {college.percentMaleEnrollment ? ((Math.round(college.percentMaleEnrollment * 10000) / 100) + '%') : ''}</div>
-                            </Popover>
-                        }>
-                            <a href='#' onClick={e => e.preventDefault()}>Detail</a>
-                        </OverlayTrigger>
-                    </td>
-                </tr>
-            )}
+                {colleges.map(college =>
+                    <CollegeLineItem college={ college } />
+                )}
             </tbody>
         </table>;
     }
@@ -192,7 +173,7 @@ interface StateModel {
     abbreviation: string;
 }
 
-interface CollegeModel {
+export interface CollegeModel {
     id: number;
     name: string;
     city: string;

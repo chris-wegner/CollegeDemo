@@ -18,12 +18,12 @@ export class NavMenu extends React.Component<{}, {}> {
                 <div className='navbar-collapse collapse'>
                     <ul className='nav navbar-nav'>
                         <li>
-                            <NavLink to={ '/' } exact activeClassName='active' onClick={() => this.closeMenu()}>
+                            <NavLink to={ '/' } exact activeClassName='active' onClick={() => this.closeNavMenu()}>
                                 <span className='glyphicon glyphicon-home'></span> Home
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to={'/colleges'} activeClassName='active' onClick={() => this.closeMenu()}>
+                            <NavLink to={'/colleges'} activeClassName='active' onClick={() => this.closeNavMenu()}>
                                 <span className='glyphicon glyphicon-th-list'></span> Search for Colleges
                             </NavLink>
                         </li>
@@ -33,7 +33,7 @@ export class NavMenu extends React.Component<{}, {}> {
         </div>;
     }
 
-    public closeMenu() {
+    public closeNavMenu() {
         var collapseButton = document.getElementById('collapseButton');
         if (collapseButton)
             collapseButton.click();

@@ -2,15 +2,14 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
 import { Button, ControlLabel, Form, FormControl, FormGroup, OverlayTrigger, PageHeader, Popover, Tooltip } from 'react-bootstrap';
-import { CollegeLineItem } from './CollegeLineItem';
+import { SearchForm } from './SearchForm';
+import { LineItem } from './LineItem';
 
 interface CollegeSearchState {
-    searchName: string;
+    defaultSearchName: string;
+    defaultSearchState: string;
     lastSearchName: string;
-    searchState: string;
     lastSearchState: string;
-    states: StateModel[];
-    loadingStates: boolean;
     colleges: CollegeModel[];
     loadingColleges: boolean;
     minNameSearchLength: number;
@@ -20,25 +19,24 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
     constructor() {
         super();
         this.state = {
-            searchName: '',
+            defaultSearchName: '',
+            defaultSearchState: 'WI', //Pre-load the grid using the best state :)
             lastSearchName: '',
-            searchState: 'WI', //Default to the best state.
-            lastSearchState: '', //Force the initial load.
-            states: [],
-            loadingStates: true,
+            lastSearchState: '',
             colleges: [],
             loadingColleges: false,
             minNameSearchLength: 3
         };
 
-        this.loadStatesInput();
-        this.refreshCollegesTable();        
+        this.refreshCollegesTable(this.state.defaultSearchName, this.state.defaultSearchState);
     }
 
     public render() {
-        let searchFormContents = this.state.loadingStates
-            ? <p><em>Loading States...</em></p>
-            : this.renderSearchForm(this.state);
+        let searchFormContents = <SearchForm
+            defaultSearchName={this.state.defaultSearchName}
+            defaultSearchState={this.state.defaultSearchState} 
+            minNameSearchLength={this.state.minNameSearchLength}
+            handleSearchFormChanges={this.refreshCollegesTable.bind(this)} />;
 
         let collegeContents = this.state.loadingColleges
             ? <p><em>Loading Colleges...</em></p>
@@ -49,27 +47,11 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
             {collegeContents}
         </div>;
     }
-
-    private handleSearchNameChange(event: any): void {
-        this.setState({ searchName: event.target.value }, () => this.refreshCollegesTable());
-    }
-
-    private handleSearchStateChange(event: any): void {
-        this.setState({ searchState: event.target.value }, () => this.refreshCollegesTable());
-    }
-
-    private loadStatesInput() {
-        fetch('api/states')
-            .then(response => response.json() as Promise<StateModel[]>)
-            .then(data => {
-                this.setState({ states: data, loadingStates: false });
-            });
-    }
-
-    private refreshCollegesTable() {
+    
+    private refreshCollegesTable(newSearchName: string, newSearchState: string) {
         let minNameSearchLength = this.state.minNameSearchLength;
-        let searchState = this.state.searchState && this.state.searchState != 'all' ? this.state.searchState : '';
-        let searchName = this.state.searchName && (this.state.searchName.length >= minNameSearchLength || searchState.length != 0) ? this.state.searchName : '';
+        let searchState = newSearchState && newSearchState != 'all' ? newSearchState : '';
+        let searchName = newSearchName && (newSearchName.length >= minNameSearchLength || searchState.length != 0) ? newSearchName : '';
         
         let lastSearchName = this.state.lastSearchName ? this.state.lastSearchName : '';
         let lastSearchState = this.state.lastSearchState ? this.state.lastSearchState : '';        
@@ -86,7 +68,7 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
             return;
         }
 
-        let nameQueryString = searchName.length > 0 ? ('name=' + this.state.searchName) : '';
+        let nameQueryString = searchName.length > 0 ? ('name=' + searchName) : '';
         let stateQueryString = searchState.length > 0 ? (nameQueryString.length > 0 ? '&' : '') + ('state=' + searchState) : '';
         let queryString = nameQueryString.length > 0 || stateQueryString.length > 0 ? ('?' + nameQueryString + stateQueryString) : '';
 
@@ -115,62 +97,11 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
             </thead>
             <tbody>
                 {colleges.map(college =>
-                    <CollegeLineItem college={ college } />
+                    <LineItem college={ college } />
                 )}
             </tbody>
         </table>;
     }
-
-    private renderSearchForm(collegeSearchState: CollegeSearchState) {
-        return <div>
-            <Form>
-                <PageHeader>Find a college or university</PageHeader>
-                <FormGroup
-                    controlId='nameSearchInput'
-                    bsClass='.nameSearch'
-                    bsSize='sm'
-                >
-                    <ControlLabel>Enter a School Name</ControlLabel>
-                    <OverlayTrigger placement="bottom" overlay={
-                        <Tooltip id='nameSearchTooltip'>{'When the State is set to -All-, a School Name that is less than ' + collegeSearchState.minNameSearchLength + ' characters will not be used to filter schools.'}</Tooltip>
-                    }>
-                        <FormControl
-                            type='text'
-                            value={collegeSearchState.searchName}
-                            placeholder='School Name'
-                            onChange={e => this.handleSearchNameChange(e)}
-                        />
-                    </OverlayTrigger>
-                </FormGroup>           
-                <br />
-                <FormGroup
-                    controlId='stateSearchInput'
-                    bsClass='.stateSearch'
-                    bsSize='sm'
-                >
-                    <ControlLabel>Select a State</ControlLabel>
-                    <FormControl
-                        componentClass='select'
-                        placeholder='select'
-                        value={collegeSearchState.searchState}
-                        onChange={e => this.handleSearchStateChange(e)}
-                    >
-                        <option value='all'>-All-</option>
-                        {collegeSearchState.states.map(state =>
-                            <option key={state.abbreviation} value={state.abbreviation}>{state.name}</option>
-                        )}
-                    </FormControl>
-                </FormGroup>
-                <br />
-                <br />
-            </Form>
-        </div>;
-    }
-}
-
-interface StateModel {
-    name: string;
-    abbreviation: string;
 }
 
 export interface CollegeModel {

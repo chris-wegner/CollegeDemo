@@ -2,11 +2,11 @@
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { CollegeModel } from './CollegeSearch';
 
-interface CollegeLineItemState {
+interface LineItemState {
     college: CollegeModel;
 }
 
-export class CollegeLineItem extends React.Component<any, CollegeLineItemState> {
+export class LineItem extends React.Component<any, LineItemState> {
     constructor(props: any) {
         super();
         this.state = {

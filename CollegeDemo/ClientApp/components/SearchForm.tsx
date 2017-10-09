@@ -68,7 +68,7 @@ export class SearchForm extends React.Component<any, SearchFormState> {
                 >
                     <ControlLabel>Enter a School Name</ControlLabel>
                     <OverlayTrigger placement="bottom" overlay={
-                        <Tooltip id='nameSearchTooltip'>{'When the State is set to -All-, a School Name that is less than ' + this.state.minNameSearchLength + ' characters will not be used to filter schools.'}</Tooltip>
+                        <Tooltip id='nameSearchTooltip'>{'When the State is set to -Choose-, a School Name that is less than ' + this.state.minNameSearchLength + ' characters will not be used to filter schools.'}</Tooltip>
                     }>
                         <FormControl
                             type='text'
@@ -91,7 +91,7 @@ export class SearchForm extends React.Component<any, SearchFormState> {
                         value={this.state.searchState}
                         onChange={e => this.handleSearchStateChange(e)}
                     >
-                        <option value='all'>-All-</option>
+                        <option value='choose'>-Choose-</option>
                         {this.state.states.map(state =>
                             <option key={state.abbreviation} value={state.abbreviation}>{state.name}</option>
                         )}

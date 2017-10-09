@@ -49,7 +49,7 @@ export class CollegeSearch extends React.Component<RouteComponentProps<{}>, Coll
     
     private refreshCollegesTable(newSearchName: string, newSearchState: string) {
         let minNameSearchLength = this.state.minNameSearchLength;
-        let searchState = newSearchState && newSearchState != 'all' ? newSearchState : '';
+        let searchState = newSearchState && newSearchState != 'choose' ? newSearchState : '';
         let searchName = newSearchName && (newSearchName.length >= minNameSearchLength || searchState.length != 0) ? newSearchName : '';
         
         let lastSearchName = this.state.lastSearchName ? this.state.lastSearchName : '';

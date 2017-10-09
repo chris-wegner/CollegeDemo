@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
-import { Button, ControlLabel, Form, FormControl, FormGroup, OverlayTrigger, PageHeader, Popover, Tooltip } from 'react-bootstrap';
+import { ControlLabel, Form, FormControl, FormGroup, OverlayTrigger, PageHeader, Tooltip } from 'react-bootstrap';
 import { LineItem } from './LineItem';
 
 interface SearchFormState {
@@ -60,7 +60,7 @@ export class SearchForm extends React.Component<any, SearchFormState> {
     private renderSearchForm() {
         return <div>
             <Form>
-                
+                <PageHeader>Find a college or university</PageHeader>
                 <FormGroup
                     controlId='nameSearchInput'
                     bsClass='.nameSearch'

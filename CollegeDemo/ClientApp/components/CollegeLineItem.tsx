@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import { CollegeModel } from './Colleges';
+import { CollegeModel } from './CollegeSearch';
 
 interface CollegeLineItemState {
     college: CollegeModel;

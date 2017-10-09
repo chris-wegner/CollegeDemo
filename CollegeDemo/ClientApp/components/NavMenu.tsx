@@ -23,7 +23,7 @@ export class NavMenu extends React.Component<{}, {}> {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to={'/colleges'} activeClassName='active' onClick={() => this.closeNavMenu()}>
+                            <NavLink to={'/collegesearch'} activeClassName='active' onClick={() => this.closeNavMenu()}>
                                 <span className='glyphicon glyphicon-th-list'></span> Search for Colleges
                             </NavLink>
                         </li>
